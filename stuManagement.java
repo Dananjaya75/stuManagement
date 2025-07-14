@@ -1,9 +1,14 @@
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -38,6 +43,8 @@ public class stuManagement {
         JTable tbl1 = new JTable();
         JScrollPane scrollPane = new JScrollPane(tbl1);
         panel.add(scrollPane);
+        String[] columnNames = { "ID", "Name", "Age", "Course" };
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         panel.add(lbid);
         panel.add(txtId);
@@ -52,8 +59,17 @@ public class stuManagement {
         panel.add(btnDelete);
         panel.add(btnSearch);
 
-        String[] columnNames = { "ID", "Name", "Age", "Course" };
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        tbl1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = tbl1.getSelectedRow();
+                txtId.setText(tbl1.getValueAt(selectedRow, 0).toString());
+                txtname.setText(tbl1.getValueAt(selectedRow, 1).toString());
+                txtage.setText(tbl1.getValueAt(selectedRow, 2).toString());
+                txtcourse.setText(tbl1.getValueAt(selectedRow, 3).toString());
+            };
+
+        });
+
         tbl1.setModel(model);
 
         List<student> students = StudentDao.getAll();
@@ -67,6 +83,24 @@ public class stuManagement {
             Object[] row = { txtId.getText(), txtname.getText(), txtage.getText(), txtcourse.getText() };
             model.addRow(row);
         });
+        btnUpdate.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = tbl1.getSelectedRow();
+
+                if (selectedRow >= 0) {
+                    model.setValueAt(txtId.getText(), selectedRow, 0);
+                    model.setValueAt(txtname.getText(), selectedRow, 1);
+                    model.setValueAt(txtage.getText(), selectedRow, 2);
+                    model.setValueAt(txtcourse.getText(), selectedRow, 3);
+
+                    JOptionPane.showMessageDialog(null, "Row updated successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a row to update.");
+                }
+            }
+        });
+
     }
 
 }

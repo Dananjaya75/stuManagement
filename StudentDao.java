@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class StudentDao {
@@ -53,4 +54,21 @@ public class StudentDao {
             e.printStackTrace();
         }
     }
+   
+           
+        
+    public static void Update(JTextField txtId){
+       
+         try{
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/testing", "root", "1234");
+            String sql="UPDATE students SET name='?',age='?',course='?' WHERE id='?'";
+
+
+         }catch(SQLException e){
+            e.getErrorCode();
+             
+         }
+       
+    }
+    
 }
