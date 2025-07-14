@@ -38,7 +38,9 @@ public class stuManagement {
         JButton btnAdd = new JButton("Add");
         JButton btnUpdate = new JButton("Update");
         JButton btnDelete = new JButton("Delete");
+        JLabel seachlab = new JLabel("Search Box");
         JButton btnSearch = new JButton("Search");
+        JTextField searchField = new JTextField(10);
 
         JTable tbl1 = new JTable();
         JScrollPane scrollPane = new JScrollPane(tbl1);
@@ -54,6 +56,8 @@ public class stuManagement {
         panel.add(txtage);
         panel.add(lbcourse);
         panel.add(txtcourse);
+        panel.add(seachlab);
+        panel.add(searchField);
         panel.add(btnAdd);
         panel.add(btnUpdate);
         panel.add(btnDelete);
@@ -98,6 +102,43 @@ public class stuManagement {
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select a row to update.");
                 }
+            }
+        });
+        btnDelete.addActionListener(e -> {
+            int selectedRow = tbl1.getSelectedRow();
+            if (selectedRow >= 0) {
+                model.removeRow(selectedRow);
+                txtId.setText("");
+                txtname.setText("");
+                txtage.setText("");
+                txtcourse.setText(" ");
+                JOptionPane.showMessageDialog(null, "Row deleted successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a row to delete.");
+            }
+        });
+
+        btnSearch.addActionListener(e -> {
+            String keyword = searchField.getText().trim().toLowerCase();
+            boolean found = false;
+
+            for (int i = 0; i < tbl1.getRowCount(); i++) {
+
+                String name = tbl1.getValueAt(i, 1).toString().toLowerCase();
+
+                if (name.equals(keyword)) {
+                    tbl1.setRowSelectionInterval(i, i);
+                    txtId.setText(tbl1.getValueAt(i, 0).toString());
+                    txtname.setText(tbl1.getValueAt(i, 1).toString());
+                    txtage.setText(tbl1.getValueAt(i, 2).toString());
+                    txtcourse.setText(tbl1.getValueAt(i, 3).toString());
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                JOptionPane.showMessageDialog(null, "No matching row found.");
             }
         });
 
