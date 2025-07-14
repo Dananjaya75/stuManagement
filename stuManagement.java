@@ -18,27 +18,26 @@ public class stuManagement {
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
-        FlowLayout lay= new FlowLayout();
+        FlowLayout lay = new FlowLayout();
         panel.setLayout(lay);
 
         frame.add(panel);
-        JLabel lbid=new JLabel("Id");
-        JTextField txtId=new JTextField(20);
-        JLabel lbname=new JLabel("Name");
-        JTextField txtname=new JTextField(20);
-        JLabel lbage=new JLabel("Age");
-        JTextField txtage=new JTextField(4);
-        JLabel lbcourse=new JLabel("Course");
-        JTextField txtcourse=new JTextField(4);
-        JButton btnAdd=new JButton("Add");
-        JButton btnUpdate=new JButton("Update");
-        JButton btnDelete=new JButton("Delete");
-        JButton btnSearch=new JButton("Search");
+        JLabel lbid = new JLabel("Id");
+        JTextField txtId = new JTextField(20);
+        JLabel lbname = new JLabel("Name");
+        JTextField txtname = new JTextField(20);
+        JLabel lbage = new JLabel("Age");
+        JTextField txtage = new JTextField(4);
+        JLabel lbcourse = new JLabel("Course");
+        JTextField txtcourse = new JTextField(4);
+        JButton btnAdd = new JButton("Add");
+        JButton btnUpdate = new JButton("Update");
+        JButton btnDelete = new JButton("Delete");
+        JButton btnSearch = new JButton("Search");
 
-        JTable tbl1=new JTable();
-        JScrollPane scrollPane=new JScrollPane(tbl1);
+        JTable tbl1 = new JTable();
+        JScrollPane scrollPane = new JScrollPane(tbl1);
         panel.add(scrollPane);
-
 
         panel.add(lbid);
         panel.add(txtId);
@@ -54,18 +53,20 @@ public class stuManagement {
         panel.add(btnSearch);
 
         String[] columnNames = { "ID", "Name", "Age", "Course" };
-DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-tbl1.setModel(model);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        tbl1.setModel(model);
 
-// Load data from DAO
-List<student> students = StudentDao.getAll();
-for (student s : students) {
-    Object[] row = { s.getId(), s.getName(), s.getAge(), s.getCourse() };
-    model.addRow(row);
-}
+        List<student> students = StudentDao.getAll();
+        for (student s : students) {
+            Object[] row = { s.getId(), s.getName(), s.getAge(), s.getCourse() };
+            model.addRow(row);
+        }
 
-
-        // StudentDao.getAll();
+        btnAdd.addActionListener(ActionListener -> {
+            StudentDao.add(txtId, txtname, txtage, txtcourse);
+            Object[] row = { txtId.getText(), txtname.getText(), txtage.getText(), txtcourse.getText() };
+            model.addRow(row);
+        });
     }
 
 }
